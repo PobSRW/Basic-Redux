@@ -1,9 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
 import './App.css';
 // import { increment } from './store/counterSlice';
 import { countAction } from './store/counterSlice';
 
 function App() {
+	const [input, setInput] = useState('');
 	const count = useSelector((state) => {
 		// useSelector รับ parameter เป็น call-back function เป็นค่า state => state ทุกตัวที่อยู่ใน store
 		// useSelector จะคล้ายๆ useContext คือไปดึงค่าจาก store มาใช้งาน
@@ -13,6 +15,11 @@ function App() {
 
 	const dispatch = useDispatch();
 	// dispatch ใช้คู่กับ actions ที่กำลังจะเกิดขึ้น
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		dispatch(countAction.addBy(Number(input)));
+	};
 
 	return (
 		<div className='App'>
@@ -27,9 +34,10 @@ function App() {
 			</button>
 			<br />
 			<br />
-
-			{/* <input type='text'></input>
-			<button type='button'>submit</button> */}
+			<form onSubmit={handleSubmit}>
+				<input type='text' onChange={(e) => setInput(e.target.value)}></input>
+				<button>submit</button>
+			</form>
 		</div>
 	);
 }
